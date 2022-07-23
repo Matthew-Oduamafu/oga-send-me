@@ -3,6 +3,8 @@ package ogasendme.delivery.ltd.ogasendme.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -15,6 +17,8 @@ import ogasendme.delivery.ltd.ogasendme.screens.fashion.FashionScreen
 import ogasendme.delivery.ltd.ogasendme.screens.food.FoodScreen
 import ogasendme.delivery.ltd.ogasendme.screens.health_and_beauty.HealthAndBeautyScreen
 import ogasendme.delivery.ltd.ogasendme.screens.home.HomeScreen
+import ogasendme.delivery.ltd.ogasendme.screens.location.LocationMapScreen
+import ogasendme.delivery.ltd.ogasendme.screens.location.SearchLocationScreen
 import ogasendme.delivery.ltd.ogasendme.screens.login.LoginScreen
 import ogasendme.delivery.ltd.ogasendme.screens.orders.DeliveryLocationMapScreen
 import ogasendme.delivery.ltd.ogasendme.screens.orders.OrderScreen
@@ -748,6 +752,71 @@ fun OgaSendMeNavigation() {
                 ) + shrinkOut(animationSpec = tween(300))
             }) {
             DeliveryLocationMapScreen(navController = navController)
+        }
+
+        // navigate to SearchLocationScreen screen
+        composable(Screens.SearchLocationScreen.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { 300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + shrinkOut(animationSpec = tween(300))
+            }) {
+            SearchLocationScreen(navController = navController)
+        }
+
+        // navigate to LocationMapScreen screen
+        val locationMap = Screens.LocationMapScreen.route
+        composable(
+            "$locationMap/{msg}",
+            arguments = listOf(
+                navArgument("msg", builder = { type = NavType.StringType })
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { 300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + shrinkOut(animationSpec = tween(300))
+            }
+        ) {
+            val msg = it.arguments?.getString("msg")
+            LocationMapScreen(navController = navController, msg = msg ?: "")
         }
     }
 }

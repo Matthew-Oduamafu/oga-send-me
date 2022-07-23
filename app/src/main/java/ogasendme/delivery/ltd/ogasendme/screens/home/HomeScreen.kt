@@ -158,7 +158,8 @@ fun HomeScreen(navController: NavController) {
                                 fieldWidth = 140.dp
                             ) {
                                 Log.d(TAG, "HomeScreen: circularButtonWithIcon called")
-                                showApplyPopup.value = true
+//                                showApplyPopup.value = true
+                                navController.navigate(Screens.LocationMapScreen.route+"/Search near location")
                             }
                         }
 

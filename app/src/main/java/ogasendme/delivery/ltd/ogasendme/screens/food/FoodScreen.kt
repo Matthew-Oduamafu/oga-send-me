@@ -26,6 +26,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -256,6 +259,7 @@ fun SearchBox(
     label: String,
     placeholderIcon: Int = R.drawable.icon_search,
     singleLine: Boolean = true,
+    onFocused:(FocusState)->Unit = {},
     onSearch: (String) -> Unit
 ) {
     val searchQuery = remember { mutableStateOf("") }
@@ -267,6 +271,7 @@ fun SearchBox(
         label = label,
         placeholderIcon = placeholderIcon,
         singleLine = singleLine,
+        onFocused = onFocused,
         imeAction = ImeAction.Search,
         onAction = KeyboardActions {
             if (!valid) return@KeyboardActions
@@ -285,6 +290,7 @@ fun TakeUserInput(
     label: String,
     placeholderIcon: Int = R.drawable.icon_search,
     singleLine: Boolean = true,
+    onFocused:(FocusState)->Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Go,
     onAction: KeyboardActions = KeyboardActions.Default
@@ -300,7 +306,7 @@ fun TakeUserInput(
             animatedVisibility = it.trim().isNotEmpty()
         },
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().onFocusChanged { onFocused(it) },
         placeholder = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

@@ -55,10 +55,9 @@ fun DeliveryLocationMapScreen(navController: NavController) {
             )
         }
     ) {
-//        val (getDisplayWidth, _, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
         Surface(modifier = Modifier.fillMaxSize(), color = Color.White) {
             Column(
-                modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp),
+                modifier = Modifier.padding(top = 12.dp, start = 8.dp, end = 8.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

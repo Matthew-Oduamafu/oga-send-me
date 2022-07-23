@@ -366,7 +366,8 @@ fun PickUpAndDeliveryLocation(
                 rightIcon = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
-                    showDialog.value = true
+//                    showDialog.value = true
+                    navController.navigate(Screens.LocationMapScreen.route+"/Where to?")
                 }
             )
         } else {
@@ -379,7 +380,8 @@ fun PickUpAndDeliveryLocation(
                 rightIcon = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
-                    showDialog.value = true
+//                    showDialog.value = true
+                    navController.navigate(Screens.LocationMapScreen.route+"/Pickup location")
                 }
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -393,7 +395,8 @@ fun PickUpAndDeliveryLocation(
                 rightIcon = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
-                    showDialog.value = true
+//                    showDialog.value = true
+                    navController.navigate(Screens.LocationMapScreen.route+"/Delivery location")
                 }
             )
         }
