@@ -33,8 +33,29 @@ fun SearchLocationScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Box(modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)) {
+                modifier = Modifier
+                    .height(75.dp)
+                    .fillMaxWidth(),
+                backgroundColor = Color.White,
+                elevation = 0.dp
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    NavIconOrAddOrRemoveIcon(
+                        painterResource(id = R.drawable.ic_close),
+                        AppColors.green,
+                        iconClicked = {
+                            navController.also {
+                                it.popBackStack()
+                            }
+                        }
+                    )
+                    Box(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
                         SearchBox(
                             label = stringResource(id = R.string.search_street_or_city),
                             onSearch = {
@@ -42,26 +63,8 @@ fun SearchLocationScreen(navController: NavController) {
                             }
                         )
                     }
-                },
-                navigationIcon = {
-                    Box(modifier = Modifier.padding(start = 4.dp)) {
-                        NavIconOrAddOrRemoveIcon(
-                            painterResource(id = R.drawable.ic_close),
-                            AppColors.green,
-                            iconClicked = { navController.also {
-                                it.popBackStack()
-//                                it.popBackStack()
-                            } }
-                        )
-                    }
-                },
-                actions = {
-                    Box(modifier = Modifier.size(10.dp))
-                },
-                modifier = Modifier.height(65.dp),
-                backgroundColor = Color.White,
-                elevation = 0.dp
-            )
+                }
+            }
         },
         backgroundColor = Color.White,
     ) {
@@ -70,7 +73,7 @@ fun SearchLocationScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 20.dp, top = 4.dp, end = 12.dp),
+                    .padding(start = 60.dp, top = 4.dp, end = 12.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
@@ -117,7 +120,7 @@ fun SearchLocationScreen(navController: NavController) {
                             style = MaterialTheme.typography.caption,
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             textAlign = TextAlign.Left,
-                            fontSize = 8.sp,
+                            fontSize = 10.sp,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
@@ -166,7 +169,7 @@ fun SearchLocationScreen(navController: NavController) {
                             style = MaterialTheme.typography.caption,
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             textAlign = TextAlign.Left,
-                            fontSize = 8.sp,
+                            fontSize = 10.sp,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
