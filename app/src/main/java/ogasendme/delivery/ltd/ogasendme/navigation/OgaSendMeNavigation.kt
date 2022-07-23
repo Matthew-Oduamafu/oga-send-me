@@ -16,6 +16,8 @@ import ogasendme.delivery.ltd.ogasendme.screens.food.FoodScreen
 import ogasendme.delivery.ltd.ogasendme.screens.health_and_beauty.HealthAndBeautyScreen
 import ogasendme.delivery.ltd.ogasendme.screens.home.HomeScreen
 import ogasendme.delivery.ltd.ogasendme.screens.login.LoginScreen
+import ogasendme.delivery.ltd.ogasendme.screens.orders.DeliveryLocationMapScreen
+import ogasendme.delivery.ltd.ogasendme.screens.orders.OrderScreen
 import ogasendme.delivery.ltd.ogasendme.screens.otp_screen.OTPCodeScreen
 import ogasendme.delivery.ltd.ogasendme.screens.package_delivery_screen.PackageDeliveryScreen
 import ogasendme.delivery.ltd.ogasendme.screens.phone_number.PhoneNumberScreen
@@ -688,6 +690,64 @@ fun OgaSendMeNavigation() {
                 ) + shrinkOut(animationSpec = tween(300))
             }) {
             SelectedProductDetailsScreen(navController = navController)
+        }
+
+        // navigate to order details screen
+        composable(Screens.OrderScreen.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { 300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + shrinkOut(animationSpec = tween(300))
+            }) {
+            OrderScreen(navController = navController)
+        }
+
+        // navigate to order details screen
+        composable(Screens.DeliveryLocationMapScreen.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { 300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -300 },
+                    animationSpec = tween(300)
+                ) + shrinkOut(animationSpec = tween(300))
+            }) {
+            DeliveryLocationMapScreen(navController = navController)
         }
     }
 }

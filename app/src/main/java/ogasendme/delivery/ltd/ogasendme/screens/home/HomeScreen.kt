@@ -739,6 +739,7 @@ fun CategoryDashBoardGrid(navController: NavController) {
         Log.d(TAG, "CategoryDashBoardGrid: space${getDisplayHeight.dp.times(dpScale)}")
         CircularButton(title = "Last Order") {
             Log.d(TAG, "HomeScreen: last order button clicked")
+            navController.navigate(Screens.OrderScreen.route)
         }
     }
 }

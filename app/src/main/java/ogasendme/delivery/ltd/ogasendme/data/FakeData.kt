@@ -3,6 +3,66 @@ package ogasendme.delivery.ltd.ogasendme.data
 import ogasendme.delivery.ltd.ogasendme.R
 
 internal val FAKE_DATA = fakeData()
+val tmp = SalesItem(
+    itemName = "Pizza Hut",
+    category = "Fast food",
+    itemImage = R.drawable.fast_food_3,
+    rating = 5.0
+)
+
+val orders_made = listOf<OrderItemInfo>(
+    OrderItemInfo(
+        tmp,
+        StoresAround(
+            storeName = "Pizza Man",
+            listOfSaleItems = listOf(tmp),
+            location = "Tech Junction"
+        ),
+        quantity = 2,
+        orderStatus = OrderStatus.CONFIRMED
+    ),
+    OrderItemInfo(
+        tmp,
+        StoresAround(
+            storeName = "Pizza Man",
+            listOfSaleItems = listOf(tmp),
+            location = "Tech Junction"
+        ),
+        quantity = 2,
+        orderStatus = OrderStatus.CONFIRMED
+    ),
+    OrderItemInfo(
+        tmp,
+        StoresAround(
+            storeName = "Pizza Man",
+            listOfSaleItems = listOf(tmp),
+            location = "Tech Junction"
+        ),
+        quantity = 2,
+        orderStatus = OrderStatus.DELIVERED
+    ),
+    OrderItemInfo(
+        tmp,
+        StoresAround(
+            storeName = "Pizza Man",
+            listOfSaleItems = listOf(tmp),
+            location = "Tech Junction"
+        ),
+        quantity = 2,
+        orderStatus = OrderStatus.DISPATCHED
+    ),
+    OrderItemInfo(
+        tmp,
+        StoresAround(
+            storeName = "Pizza Man",
+            listOfSaleItems = listOf(tmp),
+            location = "Tech Junction"
+        ),
+        quantity = 2,
+        orderStatus = OrderStatus.PENDING
+    ),
+
+)
 
 fun fakeData(): List<StoresAround> {
     val tmp = SalesItem(
@@ -638,36 +698,192 @@ val fake_data_health_and_beauty = listOf(
     )
 
 data class RestaurantType(
-    val type:String,
-    val icon:Int
+    val type: String,
+    val icon: Int
 )
 
 val fakeDataStore = listOf(
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
-    SalesItem(itemName = "Gob3 pro max - Large", category = "Local", itemImage = R.drawable.gob3_pro, rating = 5.0, price = 1.00f),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
+    SalesItem(
+        itemName = "Gob3 pro max - Large",
+        category = "Local",
+        itemImage = R.drawable.gob3_pro,
+        rating = 5.0,
+        price = 1.00f
+    ),
 
-)
+    )

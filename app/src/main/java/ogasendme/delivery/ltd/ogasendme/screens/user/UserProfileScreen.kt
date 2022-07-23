@@ -90,7 +90,7 @@ fun UserProfileScreen(navController: NavController) {
                         UserScreenItemRow(
                             title = stringResource(id = R.string.orders_lbl),
                             icon = R.drawable.ic_baseline_shopping_bag_24,
-                            onClick = {}
+                            onClick = { navController.navigate(Screens.OrderScreen.route) }
                         )
 
                         // app settings
@@ -165,7 +165,9 @@ fun UserScreenItemRow(title: String, icon: Int, onClick: () -> Unit) {
             painter = painterResource(id = icon),
             contentDescription = title,
             tint = Color.Black,
-            modifier = Modifier.size(screenArea.dp.times(0.000059f)).clip(CircleShape)
+            modifier = Modifier
+                .size(screenArea.dp.times(0.000059f))
+                .clip(CircleShape)
         )
 
         Spacer(modifier = Modifier.width(12.dp))

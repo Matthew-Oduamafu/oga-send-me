@@ -430,7 +430,8 @@ fun OgaTopAppBar(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_call),
                             contentDescription = "Help icon",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                         Text(
                             text = stringResource(id = R.string.help_lbl), style = TextStyle(

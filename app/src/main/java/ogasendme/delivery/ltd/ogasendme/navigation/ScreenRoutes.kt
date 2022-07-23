@@ -22,5 +22,6 @@ enum class ScreenRoutes {
     USER_INFORMATION,
     DELIVERY_LOCATION_MAP,
     WELCOME,
-    PHONE_NUMBER;
+    PHONE_NUMBER,
+    ORDERS;
 }

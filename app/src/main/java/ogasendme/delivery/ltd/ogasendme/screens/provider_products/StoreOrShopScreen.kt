@@ -42,6 +42,7 @@ import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.data.SalesItem
 import ogasendme.delivery.ltd.ogasendme.data.fakeDataStore
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
+import ogasendme.delivery.ltd.ogasendme.screens.anything.showToastMessage
 import ogasendme.delivery.ltd.ogasendme.screens.food.NavIconOrAddOrRemoveIcon
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
 import ogasendme.delivery.ltd.ogasendme.screens.food.SearchBox
@@ -160,6 +161,7 @@ fun StoreOrShopScreen(navController: NavController) {
 
 @Composable
 fun ProductRow(salesItem: SalesItem, onClick: () -> Unit) {
+    val context = LocalContext.current
     val (getDisplayWidth, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
     var animatedVisibility by rememberSaveable { mutableStateOf(false) }
 
@@ -194,6 +196,7 @@ fun ProductRow(salesItem: SalesItem, onClick: () -> Unit) {
                     btnSize = 15.dp,
                     iconClicked = {
                         animatedVisibility = false
+                        showToastMessage(context, "1 item removed from cart")
                     }
                 )
             }
@@ -266,6 +269,7 @@ fun ProductRow(salesItem: SalesItem, onClick: () -> Unit) {
                     btnSize = 22.dp,
                     iconClicked = {
                         animatedVisibility = true
+                        showToastMessage(context, "1 item add to cart")
                     }
                 )
             }

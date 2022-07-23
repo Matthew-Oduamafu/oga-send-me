@@ -23,4 +23,5 @@ sealed class Screens(val route: String) {
     object UserInformationScreen : Screens(ScreenRoutes.USER_INFORMATION.name)
     object DeliveryLocationMapScreen : Screens(ScreenRoutes.DELIVERY_LOCATION_MAP.name)
     object PhoneNumberScreen : Screens(ScreenRoutes.PHONE_NUMBER.name)
+    object OrderScreen : Screens(ScreenRoutes.ORDERS.name)
 }
