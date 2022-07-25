@@ -29,7 +29,6 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
-import ogasendme.delivery.ltd.ogasendme.screens.home.CircularButton
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 
@@ -49,7 +48,7 @@ fun DeliveryLocationMapScreen(navController: NavController) {
             GoogleMap(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.977f*(2 / 3f)),
+                    .fillMaxHeight(0.977f * (2 / 3f)),
                 cameraPositionState = cameraPositionState
             ) {
                 Marker(state = indeceHall, title = "Indece")
@@ -129,7 +128,9 @@ fun TrackDeliveryDetails() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
