@@ -1,6 +1,5 @@
 package ogasendme.delivery.ltd.ogasendme.screens.package_delivery_screen
 
-import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Context
 import androidx.compose.foundation.clickable
@@ -13,7 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,25 +37,28 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.checkout.OgaDialogBox
-import ogasendme.delivery.ltd.ogasendme.screens.checkout.PaymentOptionPopup
+import ogasendme.delivery.ltd.ogasendme.screens.checkout.PaymentOptionBottomSheet
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 import ogasendme.delivery.ltd.ogasendme.utils.Constants
 import java.util.*
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PackageDeliveryScreen(navController: NavController) {
     val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(
         LocalContext.current
     )
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
 
-    Scaffold(
+    BottomSheetScaffold(
         topBar = {
             OgaTopAppBar(
                 title = stringResource(id = R.string.package_delivery_lbl),
@@ -68,7 +70,15 @@ fun PackageDeliveryScreen(navController: NavController) {
                 iconClicked = { navController.popBackStack() },
                 onCartOrHelpIcon = {}
             )
-        }
+        },
+        sheetContent = {
+            PaymentOptionBottomSheet()
+        },
+        sheetPeekHeight = 0.dp,
+        sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
+        sheetBackgroundColor = Color.White,
+        sheetGesturesEnabled = true,
+        scaffoldState = scaffoldState
     ) {
         val verticalScroll = rememberScrollState()
 
@@ -94,7 +104,18 @@ fun PackageDeliveryScreen(navController: NavController) {
                 PickUpAndDeliveryLocation(navController = navController)
 
                 Spacer(modifier = Modifier.height(getDisplayHeight.dp.times(0.029f)))
-                PaymentDetails(navController = navController)
+                PaymentDetails(
+                    navController = navController,
+                    showPaymentOption = {
+                        scope.launch {
+                            if (scaffoldState.bottomSheetState.isCollapsed) {
+                                scaffoldState.bottomSheetState.expand()
+                            } else {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                    }
+                )
             }
         }
     }
@@ -367,7 +388,7 @@ fun PickUpAndDeliveryLocation(
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
 //                    showDialog.value = true
-                    navController.navigate(Screens.LocationMapScreen.route+"/Where to?")
+                    navController.navigate(Screens.LocationMapScreen.route + "/Where to?")
                 }
             )
         } else {
@@ -381,7 +402,7 @@ fun PickUpAndDeliveryLocation(
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
 //                    showDialog.value = true
-                    navController.navigate(Screens.LocationMapScreen.route+"/Pickup location")
+                    navController.navigate(Screens.LocationMapScreen.route + "/Pickup location")
                 }
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -396,7 +417,7 @@ fun PickUpAndDeliveryLocation(
                 rightIconBgColor = AppColors.green.copy(0.45f),
                 onRightIconClicked = {
 //                    showDialog.value = true
-                    navController.navigate(Screens.LocationMapScreen.route+"/Delivery location")
+                    navController.navigate(Screens.LocationMapScreen.route + "/Delivery location")
                 }
             )
         }
@@ -483,13 +504,14 @@ fun ItemOrProductAndPriceRow(item: String, itemPrice: Float, isBold: Boolean) {
 @Composable
 fun PaymentDetails(
     navController: NavController,
-    isCheckout: Boolean = false
+    isCheckout: Boolean = false,
+    showPaymentOption: () -> Unit
 ) {
 
     val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
     // payment options popup
-    val showApplyPopup = rememberSaveable { mutableStateOf(false) }
-    PaymentOptionPopup(showApplyPopup)
+//    val showApplyPopup = rememberSaveable { mutableStateOf(false) }
+//    PaymentOptionPopup(showApplyPopup)
 
     Column(
         modifier = Modifier
@@ -515,7 +537,7 @@ fun PaymentDetails(
             btnBgColor = Color.White,
             rightIcon = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
             rightIconBgColor = AppColors.green.copy(0.45f),
-            onRightIconClicked = { showApplyPopup.value = true }
+            onRightIconClicked = { showPaymentOption() }
         )
 
         Text(

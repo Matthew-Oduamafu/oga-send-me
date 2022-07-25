@@ -1,6 +1,5 @@
 package ogasendme.delivery.ltd.ogasendme.screens.checkout
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -12,9 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
 import ogasendme.delivery.ltd.ogasendme.data.fake_data_cartItems
@@ -50,25 +48,37 @@ import ogasendme.delivery.ltd.ogasendme.screens.package_delivery_screen.PickUpAn
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CheckOutAndNumberScreen(navController: NavController) {
     val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(
         LocalContext.current
     )
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
 
-    Scaffold(topBar = {
-        OgaTopAppBar(
-            title = stringResource(id = R.string.checkout_lbl),
-            bgColor = Color.White,
-            iconBgColor = AppColors.green,
-            isCart = null,
-            icon = painterResource(id = R.drawable.ic_close),
-            navController = navController,
-            iconClicked = { navController.popBackStack() },
-            onCartOrHelpIcon = {}
-        )
-    }) {
+    BottomSheetScaffold(
+        topBar = {
+            OgaTopAppBar(
+                title = stringResource(id = R.string.checkout_lbl),
+                bgColor = Color.White,
+                iconBgColor = AppColors.green,
+                isCart = null,
+                icon = painterResource(id = R.drawable.ic_close),
+                navController = navController,
+                iconClicked = { navController.popBackStack() },
+                onCartOrHelpIcon = {}
+            )
+        },
+        sheetContent = {
+            PaymentOptionBottomSheet()
+        },
+        sheetPeekHeight = 0.dp,
+        sheetShape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
+        sheetBackgroundColor = Color.White,
+        sheetGesturesEnabled = true,
+        scaffoldState = scaffoldState
+    ) {
         val verticalScroll = rememberScrollState()
 
         Surface(
@@ -97,7 +107,19 @@ fun CheckOutAndNumberScreen(navController: NavController) {
                 )
 
                 Spacer(modifier = Modifier.height(getDisplayHeight.dp.times(0.029f)))
-                PaymentDetails(navController = navController, isCheckout = true)
+                PaymentDetails(
+                    navController = navController,
+                    isCheckout = true,
+                    showPaymentOption = {
+                        scope.launch {
+                            if (scaffoldState.bottomSheetState.isCollapsed) {
+                                scaffoldState.bottomSheetState.expand()
+                            } else {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                        }
+                    }
+                )
             }
         }
     }
@@ -174,8 +196,8 @@ fun OgaDialogBox(
     navController: NavController,
     searchLabel: String,
     actionLabel: String,
-    placeholderIcon:Int = R.drawable.ic_baseline_edit_24,
-    toastMsg:String
+    placeholderIcon: Int = R.drawable.ic_baseline_edit_24,
+    toastMsg: String
 ) {
     val context = LocalContext.current
     val (getDisplayWidth, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)

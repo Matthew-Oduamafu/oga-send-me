@@ -1,6 +1,8 @@
 package ogasendme.delivery.ltd.ogasendme.screens.register
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
@@ -19,8 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.AlreadyUserOrNewUser
 import ogasendme.delivery.ltd.ogasendme.components.InputPhoneNumber
@@ -64,6 +69,8 @@ fun RegisterScreen(navController: NavController) {
         }
     }
 }
+
+private const val TAG = "RegisterScreen"
 
 @Composable
 fun ColumnDivider() {
@@ -267,6 +274,7 @@ fun AlternateSignUpOptions(navController: NavController) {
             icon = painterResource(id = R.drawable.facebook_login),
             bgColor = AppColors.facebook,
             navController = navController,
+            animationDelayTime = 10
         )
 
         // login with google
@@ -283,8 +291,31 @@ private fun SignInAndSignOptions(
     icon: Painter,
     bgColor: Color,
     navController: NavController,
+    animationDelayTime: Int = 0
 ) {
     val (_, _, screenArea) = AppUtils.screenHeightAndWidth(LocalContext.current)
+
+    val distance = with(LocalDensity.current) { 10.dp.toPx() }
+    Log.d(TAG, "SignInAndSignOptions: distance is $distance")
+    val circles = remember { Animatable(initialValue = 0f) }
+
+    val circlesValues = circles.value
+
+    LaunchedEffect(key1 = circles, block = {
+        delay(animationDelayTime * 50L)
+        circles.animateTo(
+            targetValue = 1f, animationSpec = infiniteRepeatable(
+                animation = keyframes {
+                    durationMillis = 1500
+                    0.0f at 0 with LinearOutSlowInEasing
+                    1.0f at 750 with LinearOutSlowInEasing
+                    0.0f at 750 with LinearOutSlowInEasing
+//                    0.0f at 0 with LinearOutSlowInEasing
+                },
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+    })
 
     Button(
         onClick = { navController.navigate(Screens.OTPCodeScreen.route) },
@@ -294,7 +325,11 @@ private fun SignInAndSignOptions(
             disabledElevation = 0.dp,
             focusedElevation = 0.dp
         ),
-        modifier = Modifier.size(screenArea.dp.times(0.00022f)),
+        modifier = Modifier
+            .size(screenArea.dp.times(0.00022f))
+            .graphicsLayer {
+                translationY = -circlesValues*distance
+            },
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = bgColor,

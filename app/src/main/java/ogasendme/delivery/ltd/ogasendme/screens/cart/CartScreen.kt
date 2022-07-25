@@ -42,7 +42,6 @@ private const val TAG = "CartScreen"
 @Composable
 fun CartScreen(navController: NavController) {
     val state = rememberLazyListState()
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -82,6 +81,7 @@ fun CartScreen(navController: NavController) {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(8.dp),
+                    state = state,
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

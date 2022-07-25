@@ -1,6 +1,7 @@
 package ogasendme.delivery.ltd.ogasendme.screens.splash
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
@@ -44,28 +46,12 @@ fun SplashScreen(navController: NavController = NavHostController(LocalContext.c
 
 
     if (!showLogin.value) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = AppColors.green,
-            contentColor = AppColors.green,
-            elevation = 0.dp,
-            border = BorderStroke(0.dp, AppColors.green)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.oga_send_me_logo_white),
-                    contentDescription = "Logo"
-                )
-            }
-            val scope = rememberCoroutineScope()
-            scope.launch {
-                delay(1000)
-                showLogin.value = true
-            }
+        SplashAnimation()
+
+        val scope = rememberCoroutineScope()
+        scope.launch {
+            delay(7000)
+            showLogin.value = true
         }
     } else {
         Surface(
@@ -143,6 +129,19 @@ fun SplashScreen(navController: NavController = NavHostController(LocalContext.c
         }
     }
 }
+
+
+@Composable
+fun SplashAnimation() {
+    AndroidView(
+        factory = {
+            View.inflate(it, R.layout.splash_animation, null)
+        },
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+
 
 @Composable
 fun RegisterOrLoginButton(

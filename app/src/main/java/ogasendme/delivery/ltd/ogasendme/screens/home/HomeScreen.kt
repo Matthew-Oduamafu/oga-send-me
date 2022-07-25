@@ -71,18 +71,93 @@ private val dashboardItems = listOf(
 )
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen(navController: NavController) {
 
     val (_, getDisplayHeight) = AppUtils.screenHeightAndWidth(LocalContext.current)
     val showApplyPopup = rememberSaveable { mutableStateOf(false) }
+    val scaffoldState = rememberBottomSheetScaffoldState()
+
+    Log.d(TAG, "HomeScreen: scaffoldState is ${scaffoldState.bottomSheetState.direction}")
 
 
     // pick a location popup
     LocationPopup(showPopup = showApplyPopup, navController = navController)
 
-    Scaffold(
+    BottomSheetScaffold(
+        backgroundColor = AppColors.green,
+        sheetGesturesEnabled = true,
+        sheetContent = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.89f),
+                shape = RoundedCornerShape(
+                    topStartPercent = 10,
+                    topEndPercent = 10,
+                    bottomEndPercent = 0,
+                    bottomStartPercent = 0
+                ),
+                elevation = 0.dp,
+                color = Color.White
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 8.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 6.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.stores_around_lbl),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                            ),
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                        CircularButtonWithIcon(
+                            title = "Pick location",
+                            bgColor = AppColors.green,
+                            icon = R.drawable.ic_pin_location,
+                            fieldWidth = 140.dp
+                        ) {
+                            Log.d(TAG, "HomeScreen: circularButtonWithIcon called")
+//                                showApplyPopup.value = true
+                            navController.navigate(Screens.LocationMapScreen.route + "/Search near location")
+                        }
+                    }
+
+                    val state = rememberLazyGridState()
+
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.CenterHorizontally),
+                        columns = GridCells.Fixed(2),
+                        state = state,
+                        contentPadding = PaddingValues(8.dp),
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        items(items = FAKE_DATA) { item: StoresAround ->
+                            ItemCard(
+                                item,
+                                onPressDetails = { navController.navigate(Screens.FoodOrProductItemScreen.route) })
+                        }
+                    }
+                }
+            }
+        },
         topBar = {
             OgaHomeTopAppBar(
                 title = stringResource(id = R.string.search_lbl),
@@ -92,7 +167,16 @@ fun HomeScreen(navController: NavController) {
                 onSearch = {}
             )
         },
-        backgroundColor = AppColors.green
+        scaffoldState = scaffoldState,
+        sheetElevation = 8.dp,
+        sheetPeekHeight = getDisplayHeight.dp.times(0.45f),
+        sheetBackgroundColor = Color.White,
+        sheetShape = RoundedCornerShape(
+            topStartPercent = 10,
+            topEndPercent = 10,
+            bottomEndPercent = 0,
+            bottomStartPercent = 0
+        )
     ) {
         Surface(
             modifier = Modifier
@@ -115,74 +199,7 @@ fun HomeScreen(navController: NavController) {
                     CategoryDashBoardGrid(navController = navController)
                 }
 
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 8.dp),
-                    border = BorderStroke(0.dp, color = AppColors.green),
-                    shape = RoundedCornerShape(
-                        topStartPercent = 10,
-                        topEndPercent = 10,
-                        bottomEndPercent = 0,
-                        bottomStartPercent = 0
-                    ),
-                    elevation = 0.dp,
-                    color = Color.White
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp, end = 8.dp),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 6.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.stores_around_lbl),
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                                ),
-                                modifier = Modifier.padding(top = 16.dp)
-                            )
-                            CircularButtonWithIcon(
-                                title = "Pick location",
-                                bgColor = AppColors.green,
-                                icon = R.drawable.ic_pin_location,
-                                fieldWidth = 140.dp
-                            ) {
-                                Log.d(TAG, "HomeScreen: circularButtonWithIcon called")
-//                                showApplyPopup.value = true
-                                navController.navigate(Screens.LocationMapScreen.route+"/Search near location")
-                            }
-                        }
 
-                        val state = rememberLazyGridState()
-
-                        LazyVerticalGrid(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .align(Alignment.CenterHorizontally),
-                            columns = GridCells.Fixed(2),
-                            state = state,
-                            contentPadding = PaddingValues(8.dp),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            items(items = FAKE_DATA) { item: StoresAround ->
-                                ItemCard(
-                                    item,
-                                    onPressDetails = { navController.navigate(Screens.FoodOrProductItemScreen.route) })
-                            }
-                        }
-                    }
-                }
             }
         }
     }
