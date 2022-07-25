@@ -28,7 +28,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -259,7 +258,7 @@ fun SearchBox(
     label: String,
     placeholderIcon: Int = R.drawable.icon_search,
     singleLine: Boolean = true,
-    onFocused:(FocusState)->Unit = {},
+    onFocused: (FocusState) -> Unit = {},
     onSearch: (String) -> Unit
 ) {
     val searchQuery = remember { mutableStateOf("") }
@@ -290,7 +289,7 @@ fun TakeUserInput(
     label: String,
     placeholderIcon: Int = R.drawable.icon_search,
     singleLine: Boolean = true,
-    onFocused:(FocusState)->Unit = {},
+    onFocused: (FocusState) -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Go,
     onAction: KeyboardActions = KeyboardActions.Default
@@ -306,7 +305,8 @@ fun TakeUserInput(
             animatedVisibility = it.trim().isNotEmpty()
         },
         modifier = Modifier
-            .fillMaxWidth().onFocusChanged { onFocused(it) },
+            .fillMaxWidth()
+            .onFocusChanged { onFocused(it) },
         placeholder = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -450,7 +450,11 @@ fun OgaTopAppBar(
                     }
                 }
             } else {
-                Box {}
+                Box(
+                    modifier = Modifier
+                        .width(70.dp)
+                        .height(35.dp)
+                )
             }
 
         }
