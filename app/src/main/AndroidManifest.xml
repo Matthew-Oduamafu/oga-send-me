@@ -3,15 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ogasendme.delivery.ltd.ogasendme">
 
+    <!--
+    Declaring user permissions from android
+    -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".OgaSendMeApplication"
 
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/oga_send_me_logo_transparent"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/oga_send_me_logo_transparent"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.OgaSendMe"
         tools:targetApi="31">

@@ -56,7 +56,6 @@ private const val TAG = "SelectedProductDetailsS"
 @Composable
 fun SelectedProductDetailsScreen(navController: NavController) {
     val (getDisplayWidth, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
-    val context = LocalContext.current
     val showPopup = remember { mutableStateOf(false) }
 
     Scaffold(

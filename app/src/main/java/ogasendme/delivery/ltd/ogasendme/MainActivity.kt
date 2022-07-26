@@ -8,10 +8,12 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
 import ogasendme.delivery.ltd.ogasendme.navigation.OgaSendMeNavigation
 import ogasendme.delivery.ltd.ogasendme.ui.theme.OgaSendMeTheme
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

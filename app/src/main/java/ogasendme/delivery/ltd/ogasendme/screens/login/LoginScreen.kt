@@ -32,7 +32,7 @@ fun LoginScreen(navController: NavController) {
     remember(phoneNumber) {
         mutableStateOf(phoneNumber.value.trim().length == 10)
     }
-    val labelId = stringResource(R.string.enter_phone_number)
+//    val labelId = stringResource(R.string.enter_phone_number)
 
 
     Surface(modifier = Modifier.fillMaxSize(), elevation = 0.dp) {

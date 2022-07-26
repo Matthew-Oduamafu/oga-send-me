@@ -107,7 +107,7 @@ fun TakeUserInfo(navController: NavController) {
     remember(phoneNumber) {
         mutableStateOf(phoneNumber.value.trim().length == 10)
     }
-    val labelId = stringResource(R.string.enter_phone_number)
+//    val labelId = stringResource(R.string.enter_phone_number)
     val keyboardController = LocalSoftwareKeyboardController.current
     val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
 
