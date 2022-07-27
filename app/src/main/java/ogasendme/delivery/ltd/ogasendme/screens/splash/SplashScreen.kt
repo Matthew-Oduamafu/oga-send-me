@@ -50,7 +50,7 @@ fun SplashScreen(navController: NavController = NavHostController(LocalContext.c
 
         val scope = rememberCoroutineScope()
         scope.launch {
-            delay(7000)
+            delay(100)
             showLogin.value = true
         }
     } else {

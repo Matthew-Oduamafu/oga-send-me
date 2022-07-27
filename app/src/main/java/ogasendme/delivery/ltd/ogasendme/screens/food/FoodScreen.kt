@@ -52,9 +52,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
-import ogasendme.delivery.ltd.ogasendme.data.RestaurantType
-import ogasendme.delivery.ltd.ogasendme.data.SalesItem
-import ogasendme.delivery.ltd.ogasendme.data.fake_data
+import ogasendme.delivery.ltd.ogasendme.data.fake.RestaurantType
+import ogasendme.delivery.ltd.ogasendme.data.fake.SalesItem
+import ogasendme.delivery.ltd.ogasendme.data.fake.fake_data
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.home.CartActionButton
 import ogasendme.delivery.ltd.ogasendme.screens.home.RoundedButton

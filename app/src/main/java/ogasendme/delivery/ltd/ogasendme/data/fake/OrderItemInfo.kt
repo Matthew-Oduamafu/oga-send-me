@@ -1,10 +1,10 @@
-package ogasendme.delivery.ltd.ogasendme.data
+package ogasendme.delivery.ltd.ogasendme.data.fake
 
 data class OrderItemInfo(
     val item: SalesItem,
     val store: StoresAround,
     val quantity:Int,
-    val orderStatus:OrderStatus
+    val orderStatus: OrderStatus
 )
 
 enum class OrderStatus{

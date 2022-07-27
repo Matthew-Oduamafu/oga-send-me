@@ -1,4 +1,4 @@
-package ogasendme.delivery.ltd.ogasendme.data
+package ogasendme.delivery.ltd.ogasendme.data.fake
 
 data class SalesItem(
     val itemName: String,

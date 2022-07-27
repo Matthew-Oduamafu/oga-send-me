@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
-import ogasendme.delivery.ltd.ogasendme.data.OrderItemInfo
-import ogasendme.delivery.ltd.ogasendme.data.orders_made
+import ogasendme.delivery.ltd.ogasendme.data.fake.OrderItemInfo
+import ogasendme.delivery.ltd.ogasendme.data.fake.orders_made
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors

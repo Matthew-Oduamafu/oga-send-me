@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
-import ogasendme.delivery.ltd.ogasendme.data.fake_data_electronics
+import ogasendme.delivery.ltd.ogasendme.data.fake.fake_data_electronics
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.food.ItemOrProductCard
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar

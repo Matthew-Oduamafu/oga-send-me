@@ -36,7 +36,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
-import ogasendme.delivery.ltd.ogasendme.data.fake_data_cartItems
+import ogasendme.delivery.ltd.ogasendme.data.fake.fake_data_cartItems
 import ogasendme.delivery.ltd.ogasendme.screens.anything.showToastMessage
 import ogasendme.delivery.ltd.ogasendme.screens.cart.CartItemCard
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar

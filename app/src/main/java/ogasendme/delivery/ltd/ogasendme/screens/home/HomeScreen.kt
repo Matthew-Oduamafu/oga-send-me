@@ -52,8 +52,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
-import ogasendme.delivery.ltd.ogasendme.data.FAKE_DATA
-import ogasendme.delivery.ltd.ogasendme.data.StoresAround
+import ogasendme.delivery.ltd.ogasendme.data.fake.FAKE_DATA
+import ogasendme.delivery.ltd.ogasendme.data.fake.StoresAround
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.food.SearchBox
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors

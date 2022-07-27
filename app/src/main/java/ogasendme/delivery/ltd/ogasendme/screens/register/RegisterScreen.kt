@@ -5,17 +5,16 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.ExposedDropdownMenuDefaults.textFieldColors
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +48,9 @@ import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
+
+private const val TAG = "RegisterScreen"
+
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -70,7 +73,6 @@ fun RegisterScreen(navController: NavController) {
     }
 }
 
-private const val TAG = "RegisterScreen"
 
 @Composable
 fun ColumnDivider() {
@@ -107,7 +109,6 @@ fun TakeUserInfo(navController: NavController) {
     remember(phoneNumber) {
         mutableStateOf(phoneNumber.value.trim().length == 10)
     }
-//    val labelId = stringResource(R.string.enter_phone_number)
     val keyboardController = LocalSoftwareKeyboardController.current
     val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
 
@@ -132,7 +133,7 @@ fun TakeUserInfo(navController: NavController) {
         InputField(
             valueState = fullName,
             labelId = "Full Name",
-            fieldHeight = getDisplayHeight.dp.times(0.093f),
+            fieldHeight = getDisplayHeight.dp.times(0.085f),
             capitalization = KeyboardCapitalization.Words,
             onAction = KeyboardActions { keyboardController?.hide() }
         )
@@ -142,7 +143,7 @@ fun TakeUserInfo(navController: NavController) {
             valueState = email,
             labelId = "Email",
             keyboardType = KeyboardType.Email,
-            fieldHeight = getDisplayHeight.dp.times(0.093f),
+            fieldHeight = getDisplayHeight.dp.times(0.085f),
             capitalization = KeyboardCapitalization.None,
             onAction = KeyboardActions { keyboardController?.hide() }
         )
@@ -150,7 +151,7 @@ fun TakeUserInfo(navController: NavController) {
         // taking phone number
         InputPhoneNumber(
             phoneNumber = phoneNumber,
-            height = getDisplayHeight.dp.times(0.093f),
+            height = getDisplayHeight.dp.times(0.085f),
             onAction = KeyboardActions {
                 keyboardController?.hide()
             })
@@ -159,7 +160,7 @@ fun TakeUserInfo(navController: NavController) {
             null,
             stringResource(id = R.string.sign_up_lbl),
             bgColor = AppColors.green,
-            height = getDisplayHeight.dp.times(0.093f),
+            height = getDisplayHeight.dp.times(0.085f),
             navController = navController,
             onClicked = { navController.navigate(Screens.OTPCodeScreen.route) }
         )
@@ -210,14 +211,14 @@ fun InputField(
                     text = labelId, textAlign = TextAlign.Center,
                     style = TextStyle(
                         color = AppColors.green,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular))
                     )
                 )
             },
             singleLine = isSingleLine,
             textStyle = TextStyle(
-                fontSize = 22.sp,
+                fontSize = 16.sp,
                 color = AppColors.green,
                 fontFamily = FontFamily(Font(R.font.poppins_regular))
             ),
@@ -328,7 +329,7 @@ private fun SignInAndSignOptions(
         modifier = Modifier
             .size(screenArea.dp.times(0.00022f))
             .graphicsLayer {
-                translationY = -circlesValues*distance
+                translationY = -circlesValues * distance
             },
         shape = RoundedCornerShape(20),
         colors = ButtonDefaults.buttonColors(

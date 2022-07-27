@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
-import ogasendme.delivery.ltd.ogasendme.data.fakeDataStore
+import ogasendme.delivery.ltd.ogasendme.data.fake.fakeDataStore
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
 import ogasendme.delivery.ltd.ogasendme.screens.food.SearchBox

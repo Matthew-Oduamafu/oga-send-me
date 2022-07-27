@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
-import ogasendme.delivery.ltd.ogasendme.data.CartItem
-import ogasendme.delivery.ltd.ogasendme.data.fake_data_cartItems
+import ogasendme.delivery.ltd.ogasendme.data.fake.CartItem
+import ogasendme.delivery.ltd.ogasendme.data.fake.fake_data_cartItems
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.anything.showToastMessage
 import ogasendme.delivery.ltd.ogasendme.screens.food.NavIconOrAddOrRemoveIcon
