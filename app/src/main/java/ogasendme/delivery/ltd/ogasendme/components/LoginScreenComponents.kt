@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
@@ -32,9 +33,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
+import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterAndLoginViewModel
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 
@@ -43,20 +46,30 @@ private const val TAG = "LoginScreenComponents"
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginOrSignUpWithPhoneNumber(
-    phoneNumber: MutableState<String>,
     navController: NavController,
     spacerHeight: Dp = 5.dp,
+    registerViewModel: RegisterAndLoginViewModel = viewModel(),
     onLogin: (String) -> Unit = {}
 ) {
-    val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
+    val context = LocalContext.current
+    val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(context)
+    val phoneNumber = remember { mutableStateOf("") }
 
     val keyboardController = LocalSoftwareKeyboardController.current
+    // taking phone number
     InputPhoneNumber(
         phoneNumber = phoneNumber,
-        height = getDisplayHeight.dp.times(0.08f),
+        height = getDisplayHeight.dp.times(0.085f),
+        onFocusChanged = {
+            if (phoneNumber.value.trim().isNotEmpty()) {
+                registerViewModel.isPhoneNumberValid(phoneNumber.value.trim(), context)
+            }
+        },
         onAction = KeyboardActions {
-            keyboardController?.hide()
-            onLogin("")
+            if (registerViewModel.isPhoneNumberValid(phoneNumber.value, context)) {
+                onLogin(phoneNumber.value.trim())
+                keyboardController?.hide()
+            }
         })
 
     Spacer(modifier = Modifier.height(spacerHeight))
@@ -66,7 +79,11 @@ fun LoginOrSignUpWithPhoneNumber(
         title = stringResource(id = R.string.login_lbl),
         bgColor = AppColors.green,
         navController = navController,
-        onClicked = { navController.navigate(Screens.HomeScreen.route) }
+        onClicked = {
+            if (registerViewModel.isPhoneNumberValid(phoneNumber.value, context)) {
+                navController.navigate(Screens.HomeScreen.route)
+            }
+        }
     )
 
     AlreadyUserOrNewUser(navController, isNewUser = true)
@@ -205,6 +222,7 @@ fun InputPhoneNumber(
     height: Dp = 52.dp,
     keyboardType: KeyboardType = KeyboardType.Number,
     imeAction: ImeAction = ImeAction.Done,
+    onFocusChanged: () -> Unit = {},
     onAction: KeyboardActions = KeyboardActions.Default
 ) {
     var animatedVisibility by remember { mutableStateOf(false) }
@@ -223,20 +241,25 @@ fun InputPhoneNumber(
             onValueChange = { phoneNumber.value = it; animatedVisibility = it.trim().isNotEmpty() },
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 8.dp),
+                .padding(start = 16.dp, end = 8.dp)
+                .onFocusChanged {
+                    if (!it.isFocused) {
+                        onFocusChanged()
+                    }
+                },
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.enter_phone_number),
                     textAlign = TextAlign.Center,
                     style = TextStyle(
                         color = AppColors.green,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular))
                     )
                 )
             },
             textStyle = TextStyle(
-                fontSize = 22.sp,
+                fontSize = 16.sp,
                 color = AppColors.green,
                 fontFamily = FontFamily(Font(R.font.poppins_regular))
             ),
@@ -265,7 +288,7 @@ fun InputPhoneNumber(
             keyboardActions = onAction,
             colors = ExposedDropdownMenuDefaults.textFieldColors(
                 textColor = AppColors.green,
-                backgroundColor = Color.White,
+                backgroundColor = Color.White
             )
         )
     }

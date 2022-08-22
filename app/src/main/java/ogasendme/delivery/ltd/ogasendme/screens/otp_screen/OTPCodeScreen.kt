@@ -9,15 +9,19 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -34,6 +38,7 @@ import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
+import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 
 private const val TAG = "OTPCodeScreen"
 
@@ -62,10 +67,7 @@ fun OTPCodeScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(30.dp))
 
-            OTPCodeInputFilled {
-                Log.d(TAG, "OTPCodeScreen: full code $it")
-//                navController.navigate(Screens.WelcomeScreen.route)
-            }
+            OTPCodeInputRow()
 
 
 
@@ -103,6 +105,8 @@ fun OTPCodeScreen(navController: NavController) {
     }
 }
 
+
+/*
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun OTPCodeInputFilled(onCodeComplete: (String) -> Unit) {
@@ -236,53 +240,214 @@ fun OTPCodeInputFilled(onCodeComplete: (String) -> Unit) {
 
 
 }
+*/
 
-@OptIn(ExperimentalMaterialApi::class)
+
 @Composable
-fun CircleTextField(
-    modifier: Modifier,
-    valueState: MutableState<String>,
-    fieldHeight: Dp = 62.dp,
-    fieldWidth: Dp = 62.dp,
-    keyboardType: KeyboardType = KeyboardType.Number,
-    imeAction: ImeAction = ImeAction.Next,
-    onAction: KeyboardActions = KeyboardActions.Default
-) {
-    OutlinedTextField(
-        modifier = modifier
-            .height(fieldHeight)
-            .width(fieldWidth)
-            .border(width = 3.dp, color = Color.Gray, shape = CircleShape),
-        value = valueState.value,
-        onValueChange = {
-            if (valueState.value.trim().isEmpty()) {
-                valueState.value = it
-                Log.d(TAG, "CircleTextField: value just entered ${valueState.value}")
+fun OTPCodeInputRow() {
+
+    val (displayWidth, displayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val x = 0.14f
+        val y = 0.08f
+        val s = CircleShape
+
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
             }
-        },
-        singleLine = true,
-        enabled = false,
-        textStyle = TextStyle(
-            fontSize = 20.sp,
-            color = Color.Gray,
-            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-            textAlign = TextAlign.Center
-        ),
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Sentences,
-            keyboardType = keyboardType,
-            imeAction = imeAction,
-            autoCorrect = true
-        ),
-        keyboardActions = onAction,
-        colors = ExposedDropdownMenuDefaults.textFieldColors(
-            textColor = Color.Gray,
-            backgroundColor = Color.White,
-            cursorColor = Color.LightGray,
-            focusedIndicatorColor = Color.LightGray,
-            unfocusedIndicatorColor = Color.LightGray
-        ),
-        shape = CircleShape
-    )
+        )
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
+            }
+        )
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
+            }
+        )
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
+            }
+        )
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
+            }
+        )
+
+        TakeUserTextInputOTP(
+            placeholderLbl = stringResource(id = R.string.otp_x_lbl),
+            bgColor = Color.White,
+            inputWidth = displayWidth.dp.times(x),
+            inputHeight = displayHeight.dp.times(y),
+            enabled = true,
+            inputTextColor = Color.Black,
+            capitalization = KeyboardCapitalization.None,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            shape = s,
+            singleLine = true,
+            maxLine = 1,
+            textEntered = {
+                Log.d(TAG, "OTPCodeInputRow: $it")
+            }
+        )
+    }
 }
 
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
+@Composable
+fun TakeUserTextInputOTP(
+    placeholderLbl: String,
+    bgColor: Color,
+    inputWidth: Dp,
+    inputHeight: Dp,
+    enabled: Boolean,
+    inputTextColor: Color,
+    capitalization: KeyboardCapitalization,
+    keyboardType: KeyboardType,
+    imeAction: ImeAction,
+    shape: Shape,
+    singleLine: Boolean,
+    maxLine: Int,
+    textEntered: (String) -> Unit
+) {
+    Log.d(TAG, "TakeUserTextInputOTP: called with place holder $placeholderLbl")
+    val userInput = rememberSaveable { mutableStateOf("") }
+    val valid = userInput.value.trim().isNotEmpty()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+
+
+    TextField(
+        value = userInput.value,
+        onValueChange = {
+            Log.d(TAG, "TakeUserTextInputOTP: called it == $it")
+            if (it.isEmpty()) {
+                userInput.value = ""
+                focusManager.moveFocus(FocusDirection.Left)
+            } else {
+                userInput.value = it.last().toString()
+                focusManager.moveFocus(FocusDirection.Right)
+            }
+        },
+        modifier = Modifier
+            .height(inputHeight)
+            .width(inputWidth)
+            .border(width = 3.dp, color = Color.Gray, shape = CircleShape)
+            .onFocusChanged {
+                textEntered(userInput.value.trim())
+            },
+        enabled = enabled,
+        textStyle = TextStyle(
+            fontSize = 23.sp,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(R.font.poppins_regular))
+        ),
+        placeholder = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_asterisk3),
+                contentDescription = null,
+//                modifier = Modifier.size(200.dp)
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            capitalization = capitalization,
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        keyboardActions = KeyboardActions {
+            if (!valid) return@KeyboardActions
+
+            textEntered(userInput.value.trim())
+            keyboardController?.hide()
+        },
+        singleLine = singleLine,
+        maxLines = maxLine,
+        shape = shape,
+        colors = ExposedDropdownMenuDefaults.textFieldColors(
+            textColor = inputTextColor,
+            disabledIndicatorColor = bgColor,
+            placeholderColor = inputTextColor,
+            disabledPlaceholderColor = inputTextColor,
+            disabledTextColor = inputTextColor,
+            focusedIndicatorColor = Color.Unspecified,
+            unfocusedIndicatorColor = Color.Unspecified,
+            cursorColor = inputTextColor,
+            backgroundColor = bgColor,
+        )
+    )
+}

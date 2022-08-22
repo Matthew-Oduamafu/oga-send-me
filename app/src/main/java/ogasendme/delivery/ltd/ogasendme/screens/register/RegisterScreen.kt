@@ -1,29 +1,32 @@
 package ogasendme.delivery.ltd.ogasendme.screens.register
 
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.ExposedDropdownMenuDefaults.textFieldColors
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,12 +38,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.AlreadyUserOrNewUser
 import ogasendme.delivery.ltd.ogasendme.components.InputPhoneNumber
@@ -53,16 +59,19 @@ private const val TAG = "RegisterScreen"
 
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(
+    navController: NavController,
+    registerViewModel: RegisterAndLoginViewModel = viewModel()
+) {
     Surface(modifier = Modifier.fillMaxSize(), color = Color.White, elevation = 0.dp) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TakeUserInfo(navController)
+            TakeUserInfo(navController, registerViewModel = registerViewModel)
 
             ColumnDivider()
 
@@ -101,16 +110,19 @@ fun ColumnDivider() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TakeUserInfo(navController: NavController) {
+fun TakeUserInfo(navController: NavController, registerViewModel: RegisterAndLoginViewModel) {
+    val context = LocalContext.current
     val phoneNumber = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val fullName = remember { mutableStateOf("") }
+    val showEmptyFieldDialog = remember { mutableStateOf(false) }
 
     remember(phoneNumber) {
         mutableStateOf(phoneNumber.value.trim().length == 10)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(LocalContext.current)
+    val (_, getDisplayHeight, _) = AppUtils.screenHeightAndWidth(context)
+    val focusManager = LocalFocusManager.current
 
 
     Column(
@@ -135,9 +147,19 @@ fun TakeUserInfo(navController: NavController) {
             labelId = "Full Name",
             fieldHeight = getDisplayHeight.dp.times(0.085f),
             capitalization = KeyboardCapitalization.Words,
-            onAction = KeyboardActions { keyboardController?.hide() }
+            onFocusChanged = {
+                if (fullName.value.trim().isNotEmpty()) {
+                    registerViewModel.isFullNameValid(fullName.value.trim(), context)
+                }
+            },
+            onAction = KeyboardActions {
+                focusManager.moveFocus(FocusDirection.Down)
+//                keyboardController?.hide()
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
+
+
         // taking email
         InputField(
             valueState = email,
@@ -145,13 +167,28 @@ fun TakeUserInfo(navController: NavController) {
             keyboardType = KeyboardType.Email,
             fieldHeight = getDisplayHeight.dp.times(0.085f),
             capitalization = KeyboardCapitalization.None,
-            onAction = KeyboardActions { keyboardController?.hide() }
+            onFocusChanged = {
+                if (email.value.trim().isNotEmpty()) {
+                    registerViewModel.isEmailValid(email.value.trim(), context)
+                }
+            },
+            onAction = KeyboardActions {
+                focusManager.moveFocus(FocusDirection.Down)
+//                keyboardController?.hide()
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
+
+
         // taking phone number
         InputPhoneNumber(
             phoneNumber = phoneNumber,
             height = getDisplayHeight.dp.times(0.085f),
+            onFocusChanged = {
+                if (phoneNumber.value.trim().isNotEmpty()) {
+                    registerViewModel.isPhoneNumberValid(phoneNumber.value.trim(), context)
+                }
+            },
             onAction = KeyboardActions {
                 keyboardController?.hide()
             })
@@ -162,11 +199,77 @@ fun TakeUserInfo(navController: NavController) {
             bgColor = AppColors.green,
             height = getDisplayHeight.dp.times(0.085f),
             navController = navController,
-            onClicked = { navController.navigate(Screens.OTPCodeScreen.route) }
+            onClicked = {
+                showEmptyFieldDialog.value = email.value.trim().isEmpty() || fullName.value.trim()
+                    .isEmpty() || phoneNumber.value.trim().isEmpty()
+                if (!showEmptyFieldDialog.value) {
+                    navController.navigate(Screens.OTPCodeScreen.route)
+                }
+            }
         )
-    }
 
+        // dialog
+        EmptyInputFieldDialog(showDialog = showEmptyFieldDialog)
+    }
 }
+
+
+@OptIn(ExperimentalAnimationApi::class)
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun EmptyInputFieldDialog(showDialog: MutableState<Boolean>) {
+    val scope = rememberCoroutineScope()
+
+
+    if (showDialog.value) {
+        scope.launch {
+            delay(2500)
+            showDialog.value = false
+        }
+        AnimatedVisibility(
+            showDialog.value,
+            enter = fadeIn(tween(300, easing = LinearOutSlowInEasing)),
+            exit = scaleOut(tween(200, easing = FastOutLinearInEasing))
+        ) {
+            Dialog(
+                onDismissRequest = { showDialog.value = false },
+                properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true
+                )
+            ) {
+                OnInputErrorMsg(stringResource(id = R.string.inputs_not_empty_lbl))
+            }
+        }
+    }
+}
+
+@Composable
+fun OnInputErrorMsg(msg: String) {
+    Surface(
+        modifier = Modifier
+            .height(48.dp)
+            .width(150.dp),
+        color = Color.White,
+        shape = RoundedCornerShape(15)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = msg,
+                style = TextStyle(
+                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp,
+                    color = Color.Red.copy(0.55f)
+                )
+            )
+        }
+    }
+}
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -176,20 +279,18 @@ fun InputField(
     labelId: String,
     fieldHeight: Dp = 62.dp,
     isSingleLine: Boolean = true,
+    onFocusChanged: () -> Unit = {},
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Sentences,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default
 ) {
-    var animatedVisibility by remember {
-        mutableStateOf(false)
-    }
+    var animatedVisibility by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(fieldHeight),
-//        shape = RoundedCornerShape(30),
         shape = CircleShape,
         border = BorderStroke(2.dp, color = AppColors.green),
 
@@ -200,7 +301,12 @@ fun InputField(
         TextField(
             modifier = modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 8.dp),
+                .padding(start = 16.dp, end = 8.dp)
+                .onFocusChanged {
+                    if (!it.isFocused) {
+                        onFocusChanged()
+                    }
+                },
             value = valueState.value,
             onValueChange = {
                 valueState.value = it
@@ -275,7 +381,6 @@ fun AlternateSignUpOptions(navController: NavController) {
             icon = painterResource(id = R.drawable.facebook_login),
             bgColor = AppColors.facebook,
             navController = navController,
-            animationDelayTime = 10
         )
 
         // login with google

@@ -94,7 +94,7 @@ fun DeliveryLocationMapScreen(navController: NavController) {
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = stringResource(id = R.string.deliverying_your_order_lbl),
+                        text = stringResource(id = R.string.delivering_your_order_lbl),
                         style = MaterialTheme.typography.h5,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
                         textAlign = TextAlign.Start,

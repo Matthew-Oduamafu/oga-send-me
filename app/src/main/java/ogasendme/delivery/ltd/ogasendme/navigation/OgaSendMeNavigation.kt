@@ -3,6 +3,7 @@ package ogasendme.delivery.ltd.ogasendme.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -29,6 +30,7 @@ import ogasendme.delivery.ltd.ogasendme.screens.provider_products.FoodOrProductI
 import ogasendme.delivery.ltd.ogasendme.screens.provider_products.SelectedProductDetailsScreen
 import ogasendme.delivery.ltd.ogasendme.screens.provider_products.StoreOrShopScreen
 import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterScreen
+import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterAndLoginViewModel
 import ogasendme.delivery.ltd.ogasendme.screens.splash.SplashScreen
 import ogasendme.delivery.ltd.ogasendme.screens.user.UserInformationScreen
 import ogasendme.delivery.ltd.ogasendme.screens.user.UserProfileScreen
@@ -39,7 +41,7 @@ import ogasendme.delivery.ltd.ogasendme.screens.welcome.WelcomeScreen
 fun OgaSendMeNavigation() {
     val navController = rememberAnimatedNavController()
 
-    AnimatedNavHost(navController = navController, startDestination = Screens.SplashScreen.route,
+    AnimatedNavHost(navController = navController, startDestination = Screens.LoginScreen.route,
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { 300 },
@@ -153,7 +155,8 @@ fun OgaSendMeNavigation() {
                     animationSpec = tween(300)
                 ) + shrinkOut(animationSpec = tween(300))
             }) {
-            RegisterScreen(navController = navController)
+            val registerViewModel = viewModel<RegisterAndLoginViewModel>()
+            RegisterScreen(navController = navController, registerViewModel = registerViewModel)
         }
 
 

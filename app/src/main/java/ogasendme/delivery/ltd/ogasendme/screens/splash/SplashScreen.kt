@@ -50,7 +50,7 @@ fun SplashScreen(navController: NavController = NavHostController(LocalContext.c
 
         val scope = rememberCoroutineScope()
         scope.launch {
-            delay(100)
+            delay(7000)
             showLogin.value = true
         }
     } else {
@@ -157,7 +157,7 @@ fun RegisterOrLoginButton(
             .width(getDisplayWidth.dp.times(0.52f)),
         onClick = {
             navController.also {
-                it.popBackStack();
+                it.popBackStack()
                 if (isRegister) {
                     it.navigate(Screens.RegisterScreen.route)
                 } else {

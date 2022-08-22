@@ -99,7 +99,15 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="deliverying_your_order_lbl">Deliverying your order</string>
-    <string name="search_street_or_city">Search street, city, district...</string>
+    <string name="delivering_your_order_lbl">Delivering your order</string>
+    <string name="search_street_or_city">Search street, city, district…</string>
     <string name="use_current_location_lbl">Use current location</string>
+    <string name="country_code">+233</string>
+    <string name="otp_x_lbl">*</string>
+    <string name="inputs_not_empty_lbl">Provide user info</string>
+    <string name="invalid_email_msg_lbl">Invalid email</string>
+    <string name="invalid_full_msg_lbl">Name can\'t contain special characters</string>
+    <string name="phone_short_msg_lbl">Too short for a phone number</string>
+    <string name="phone_long_msg_lbl">Too long for a phone number</string>
+    <string name="invalid_phone_msg_lbl">Invalid number</string>
 </resources>

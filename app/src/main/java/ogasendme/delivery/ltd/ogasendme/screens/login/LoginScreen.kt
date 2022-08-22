@@ -18,16 +18,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ogasendme.delivery.ltd.ogasendme.R
 import ogasendme.delivery.ltd.ogasendme.components.AllLoginOptions
 import ogasendme.delivery.ltd.ogasendme.components.LoginOrSignUpWithPhoneNumber
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
+import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterAndLoginViewModel
 
 private const val TAG = "LoginScreen"
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, registerViewModel:RegisterAndLoginViewModel = viewModel()) {
     val phoneNumber = remember { mutableStateOf("") }
     remember(phoneNumber) {
         mutableStateOf(phoneNumber.value.trim().length == 10)
@@ -80,7 +82,7 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
                 Spacer(modifier = Modifier.fillMaxHeight(0.015f))
-                LoginOrSignUpWithPhoneNumber(phoneNumber, navController) {
+                LoginOrSignUpWithPhoneNumber(navController, registerViewModel = registerViewModel) {
                     Log.d(TAG, "LoginScreen: Signing in")
                     navController.navigate(Screens.OTPCodeScreen.route)
                 }
