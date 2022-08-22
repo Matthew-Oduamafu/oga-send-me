@@ -29,8 +29,8 @@ import ogasendme.delivery.ltd.ogasendme.screens.phone_number.PhoneNumberScreen
 import ogasendme.delivery.ltd.ogasendme.screens.provider_products.FoodOrProductItemScreen
 import ogasendme.delivery.ltd.ogasendme.screens.provider_products.SelectedProductDetailsScreen
 import ogasendme.delivery.ltd.ogasendme.screens.provider_products.StoreOrShopScreen
-import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterScreen
 import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterAndLoginViewModel
+import ogasendme.delivery.ltd.ogasendme.screens.register.RegisterScreen
 import ogasendme.delivery.ltd.ogasendme.screens.splash.SplashScreen
 import ogasendme.delivery.ltd.ogasendme.screens.user.UserInformationScreen
 import ogasendme.delivery.ltd.ogasendme.screens.user.UserProfileScreen

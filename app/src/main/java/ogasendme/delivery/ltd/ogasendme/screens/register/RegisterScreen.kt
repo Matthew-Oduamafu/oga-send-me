@@ -1,7 +1,11 @@
 package ogasendme.delivery.ltd.ogasendme.screens.register
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
@@ -45,6 +49,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ogasendme.delivery.ltd.ogasendme.R
@@ -52,6 +59,7 @@ import ogasendme.delivery.ltd.ogasendme.components.AlreadyUserOrNewUser
 import ogasendme.delivery.ltd.ogasendme.components.InputPhoneNumber
 import ogasendme.delivery.ltd.ogasendme.components.SignInAndSignOptions
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
+import ogasendme.delivery.ltd.ogasendme.screens.anything.showToastMessage
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 import ogasendme.delivery.ltd.ogasendme.utils.AppUtils
 
@@ -75,7 +83,7 @@ fun RegisterScreen(
 
             ColumnDivider()
 
-            AlternateSignUpOptions(navController)
+            AlternateSignUpOptions(navController, registerViewModel)
 
             AlreadyUserOrNewUser(navController, isNewUser = false)
         }
@@ -362,8 +370,86 @@ fun InputField(
 }
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AlternateSignUpOptions(navController: NavController) {
+fun LoadingProgressIndicator(show: MutableState<Boolean>) {
+
+    if (show.value) {
+        Dialog(
+            onDismissRequest = { show.value = false },
+            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        ) {
+            AnimatedVisibility(
+                show.value, enter = slideInHorizontally(
+                    initialOffsetX = { 500 },
+                    animationSpec = tween(500, easing = EaseInElastic)
+                ) + scaleIn(animationSpec = tween(500, easing = EaseInElastic)),
+                exit = slideOutHorizontally(
+                    targetOffsetX = { -200 },
+                    animationSpec = tween(500)
+                ) + scaleOut(animationSpec = tween(500))
+            ) {
+                Surface(
+                    modifier = Modifier.size(48.dp),
+                    shape = RoundedCornerShape(10),
+                    color = Color.White,
+                    elevation = 8.dp
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize(0.90f)
+                            .padding(8.dp),
+                        color = AppColors.lightLightGreen
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun AlternateSignUpOptions(
+    navController: NavController,
+    registerViewModel: RegisterAndLoginViewModel = viewModel()
+) {
+    val context = LocalContext.current
+    val showLoading = remember { mutableStateOf(false) }
+//    val scope = rememberCoroutineScope()
+
+
+    LoadingProgressIndicator(show = showLoading)
+
+    val result = remember {
+        mutableStateOf<ActivityResult?>(null)
+    }
+    val googleSignInLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { res: ActivityResult ->
+            result.value = res
+        }
+    val googleSignInClient = registerViewModel.getGoogleLoginAuth(
+        context,
+        stringResource(id = R.string.your_web_client_id)
+    )
+    if (result.value != null) {
+        showLoading.value = false
+        if (result.value!!.resultCode == Activity.RESULT_OK) {
+            val task: Task<GoogleSignInAccount> =
+                GoogleSignIn.getSignedInAccountFromIntent(
+                    result.value!!.data
+                )
+
+            registerViewModel.handleSignInResult(task, context) { isSuccess ->
+                if (isSuccess) {
+                    navController.navigate(Screens.PhoneNumberScreen.route)
+                } else {
+                    showToastMessage(context, "SignUp failed")
+                }
+            }
+        }
+    }
+
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -374,6 +460,10 @@ fun AlternateSignUpOptions(navController: NavController) {
             icon = painterResource(id = R.drawable.google_login),
             bgColor = AppColors.google,
             navController = navController,
+            onClick = {
+                showLoading.value = true
+                googleSignInLauncher.launch(googleSignInClient.signInIntent)
+            }
         )
 
         // login with google
@@ -381,6 +471,10 @@ fun AlternateSignUpOptions(navController: NavController) {
             icon = painterResource(id = R.drawable.facebook_login),
             bgColor = AppColors.facebook,
             navController = navController,
+            animationDelayTime = 100,
+            onClick = {
+
+            }
         )
 
         // login with google
@@ -388,6 +482,9 @@ fun AlternateSignUpOptions(navController: NavController) {
             icon = painterResource(id = R.drawable.apple_login),
             bgColor = AppColors.apple,
             navController = navController,
+            onClick = {
+
+            }
         )
     }
 }
@@ -397,9 +494,11 @@ private fun SignInAndSignOptions(
     icon: Painter,
     bgColor: Color,
     navController: NavController,
-    animationDelayTime: Int = 0
+    animationDelayTime: Int = 0,
+    onClick: () -> Unit
 ) {
     val (_, _, screenArea) = AppUtils.screenHeightAndWidth(LocalContext.current)
+    Log.d(TAG, "SignInAndSignOptions: $navController")
 
     val distance = with(LocalDensity.current) { 10.dp.toPx() }
     Log.d(TAG, "SignInAndSignOptions: distance is $distance")
@@ -424,7 +523,9 @@ private fun SignInAndSignOptions(
     })
 
     Button(
-        onClick = { navController.navigate(Screens.OTPCodeScreen.route) },
+        onClick = {
+            onClick()
+        },
         elevation = ButtonDefaults.elevation(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp,
