@@ -3,6 +3,7 @@ package ogasendme.delivery.ltd.ogasendme.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -19,6 +20,7 @@ import ogasendme.delivery.ltd.ogasendme.screens.food.FoodScreen
 import ogasendme.delivery.ltd.ogasendme.screens.health_and_beauty.HealthAndBeautyScreen
 import ogasendme.delivery.ltd.ogasendme.screens.home.HomeScreen
 import ogasendme.delivery.ltd.ogasendme.screens.location.LocationMapScreen
+import ogasendme.delivery.ltd.ogasendme.screens.location.LocationViewModel
 import ogasendme.delivery.ltd.ogasendme.screens.location.SearchLocationScreen
 import ogasendme.delivery.ltd.ogasendme.screens.login.LoginScreen
 import ogasendme.delivery.ltd.ogasendme.screens.orders.DeliveryLocationMapScreen
@@ -819,7 +821,8 @@ fun OgaSendMeNavigation() {
             }
         ) {
             val msg = it.arguments?.getString("msg")
-            LocationMapScreen(navController = navController, msg = msg ?: "")
+            val locationViewModel = hiltViewModel<LocationViewModel>()
+            LocationMapScreen(navController = navController, msg = msg ?: "", locationViewModel = locationViewModel)
         }
     }
 }

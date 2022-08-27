@@ -13,6 +13,9 @@ import ogasendme.delivery.ltd.ogasendme.navigation.OgaSendMeNavigation
 import ogasendme.delivery.ltd.ogasendme.ui.theme.OgaSendMeTheme
 import ogasendme.delivery.ltd.ogasendme.utils.AppColors
 
+const val REQUEST_PERMISSIONS_CODE = 1234
+
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

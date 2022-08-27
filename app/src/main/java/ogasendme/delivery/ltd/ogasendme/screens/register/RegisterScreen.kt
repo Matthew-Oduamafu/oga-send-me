@@ -2,7 +2,6 @@ package ogasendme.delivery.ltd.ogasendme.screens.register
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -429,7 +428,7 @@ fun AlternateSignUpOptions(
         }
     val googleSignInClient = registerViewModel.getGoogleLoginAuth(
         context,
-        stringResource(id = R.string.your_web_client_id)
+        stringResource(id = R.string.my_web_client_id)
     )
     if (result.value != null) {
         showLoading.value = false
@@ -498,10 +497,10 @@ private fun SignInAndSignOptions(
     onClick: () -> Unit
 ) {
     val (_, _, screenArea) = AppUtils.screenHeightAndWidth(LocalContext.current)
-    Log.d(TAG, "SignInAndSignOptions: $navController")
+//    Log.d(TAG, "SignInAndSignOptions: $navController")
 
     val distance = with(LocalDensity.current) { 10.dp.toPx() }
-    Log.d(TAG, "SignInAndSignOptions: distance is $distance")
+//    Log.d(TAG, "SignInAndSignOptions: distance is $distance")
     val circles = remember { Animatable(initialValue = 0f) }
 
     val circlesValues = circles.value

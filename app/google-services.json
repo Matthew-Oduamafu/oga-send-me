@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "860245983964",
-    "project_id": "oga-send-me-356304",
-    "storage_bucket": "oga-send-me-356304.appspot.com"
+    "project_number": "697037514226",
+    "project_id": "oga-send-me-dev-mode",
+    "storage_bucket": "oga-send-me-dev-mode.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:860245983964:android:c11535b8536406d7c92a19",
+        "mobilesdk_app_id": "1:697037514226:android:52049f82208fbf27caf76b",
         "android_client_info": {
           "package_name": "ogasendme.delivery.ltd.ogasendme"
         }
       },
       "oauth_client": [
         {
-          "client_id": "860245983964-8fvt3fuv0gujundobn02qbliim3ssq5k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ogasendme.delivery.ltd.ogasendme",
-            "certificate_hash": "a88627aac3a7c96e9553a8547a54bfbc26b2d095"
-          }
-        },
-        {
-          "client_id": "860245983964-68bk465fgno8dn0veuq7i7t8qm71cln6.apps.googleusercontent.com",
+          "client_id": "697037514226-54mufh9vh2q8paqskcjncf88cj686t5o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBPp1ZGGGjv-jNiHfEzHggNDWkb-0KSb4c"
+          "current_key": "AIzaSyBEsEPcPWpNiHVS-BW8uS8c2xNfjnP5nJQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "860245983964-68bk465fgno8dn0veuq7i7t8qm71cln6.apps.googleusercontent.com",
+              "client_id": "697037514226-54mufh9vh2q8paqskcjncf88cj686t5o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -110,6 +110,8 @@
     <string name="phone_short_msg_lbl">Too short for a phone number</string>
     <string name="phone_long_msg_lbl">Too long for a phone number</string>
     <string name="invalid_phone_msg_lbl">Invalid number</string>
-    <string name="your_web_client_id">860245983964-68bk465fgno8dn0veuq7i7t8qm71cln6.apps.googleusercontent.com</string>
+    <string name="my_web_client_id">697037514226-54mufh9vh2q8paqskcjncf88cj686t5o.apps.googleusercontent.com</string>
     <string name="empty_lbl" />
+    <string name="ok_lbl">Ok</string>
+    <string name="cancel_lbl">Cancel</string>
 </resources>

@@ -7,17 +7,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -26,6 +33,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import ogasendme.delivery.ltd.ogasendme.R
+import ogasendme.delivery.ltd.ogasendme.model.app.LocationDetails
 import ogasendme.delivery.ltd.ogasendme.navigation.Screens
 import ogasendme.delivery.ltd.ogasendme.screens.food.OgaTopAppBar
 import ogasendme.delivery.ltd.ogasendme.screens.food.SearchBox
@@ -36,7 +44,11 @@ private const val TAG = "LocationMapScreen"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun LocationMapScreen(navController: NavController, msg: String) {
+fun LocationMapScreen(
+    navController: NavController,
+    msg: String,
+    locationViewModel: LocationViewModel = hiltViewModel()
+) {
     Scaffold(
         topBar = {
             val indecePos = LatLng(6.6775, -1.5720)
@@ -66,7 +78,10 @@ fun LocationMapScreen(navController: NavController, msg: String) {
         }
     ) {
         val (_, _, screenArea) = AppUtils.screenHeightAndWidth(LocalContext.current)
+        val showLocationDialog = remember { mutableStateOf(false) }
 
+
+        ChooseCurrentLocationDialog(showLocationDialog, locationViewModel)
 
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -120,7 +135,9 @@ fun LocationMapScreen(navController: NavController, msg: String) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { },
+                            .clickable {
+                                showLocationDialog.value = true
+                            },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -135,6 +152,7 @@ fun LocationMapScreen(navController: NavController, msg: String) {
                                 tint = AppColors.green,
                                 modifier = Modifier
                                     .padding(7.dp)
+                                    .clickable { showLocationDialog.value = true }
                             )
                         }
                         Text(
@@ -143,11 +161,100 @@ fun LocationMapScreen(navController: NavController, msg: String) {
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             textAlign = TextAlign.Start,
                             color = AppColors.green,
-                            modifier = Modifier.padding(start = 4.dp)
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .clickable { showLocationDialog.value = true }
                         )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ChooseCurrentLocationDialog(
+    show: MutableState<Boolean>,
+    viewModel: LocationViewModel = hiltViewModel()
+) {
+    val tmp = remember {
+        mutableStateOf<LocationDetails?>(null)
+    }
+    val loc = LocationLiveData(LocalContext.current)
+
+    loc.locationUpdatePriority(true)
+    loc.startLocationUpdates()
+    loc.observeForever {
+        tmp.value = it
+    }
+
+    if (show.value) {
+        AlertDialog(
+            onDismissRequest = { show.value = false },
+            title = {},
+            modifier = Modifier
+//                .fillMaxWidth(0.8f)
+//                .fillMaxWidth(0.4f),
+            ,
+            confirmButton = {
+                Button(
+                    onClick = {
+                        tmp.value?.let { viewModel.addNewLocationEntry(it) }
+                        show.value = false
+                    }, colors = buttonColors(
+                        backgroundColor = Color.LightGray.copy(0.56f)
+                    )
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.ok_lbl), style = TextStyle(
+                                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                color = AppColors.green,
+                                textAlign = TextAlign.Center
+                            )
+                        )
+                    }
+                }
+            },
+            dismissButton = {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = { show.value = false }, colors = buttonColors(
+                            backgroundColor = Color.LightGray.copy(0.56f)
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.cancel_lbl), style = TextStyle(
+                                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                color = AppColors.green,
+                                textAlign = TextAlign.Center
+                            )
+                        )
+                    }
+                }
+            },
+            text = {
+                Text(
+                    text = if (tmp.value != null) tmp.value!!.street else "Loc",
+                    style = TextStyle(
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        color = AppColors.green,
+                        textAlign = TextAlign.Center
+                    )
+                )
+            },
+            shape = RoundedCornerShape(15),
+            backgroundColor = Color.White,
+            properties = DialogProperties(
+                dismissOnClickOutside = false,
+                dismissOnBackPress = false
+            )
+        )
     }
 }
