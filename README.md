@@ -9,6 +9,15 @@ Oga Send Me is a delivery app developed using the latest Android technologies an
 **app screen shots**
 ![Oga Send Me Logo](screenshots.jpg)
 
+## Download
+
+You can download the latest version of Oga Send Me from our GitHub Releases:
+
+[Download Oga Send Me v1.0.0-alpha](https://github.com/Matthew-Oduamafu/oga-send-me/releases/tag/v1.0.0-alpha)
+
+Make sure to select the appropriate APK file for your Android device. After downloading, you can install the app on your device and start using it.
+
+
 
 ## Features
 
