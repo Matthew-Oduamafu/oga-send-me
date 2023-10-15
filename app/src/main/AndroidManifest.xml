@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="ogasendme.delivery.ltd.ogasendme">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--
     Declaring user permissions from android
@@ -37,7 +36,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value= "${MAPS_API_KEY}" />
+            android:value= "AIzaSyDOSZEj6en0AmhUxvW6PpuQ6iJHWWItnUc" />
     </application>
 
 </manifest>
